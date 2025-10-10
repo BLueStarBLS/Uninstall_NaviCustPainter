@@ -9,9 +9,10 @@ let previewCanvas;
 let color_block_bk = "#207CA5";
 let color_devideline = "#2E4068";
 let compressedMode = false;
+let outline_stroke = 8;
 
 function setup() {
-  canvas = createCanvas(gridSize * cellSize, gridSize * cellSize);
+  canvas = createCanvas(gridSize * cellSize + outline_stroke , gridSize * cellSize + outline_stroke);
   canvas.parent("canvas-container");
   noStroke();
 
@@ -77,7 +78,7 @@ clearBtn.addEventListener("click", () => {
   updatePreview(true);
 });
 
-// --- 全部清除按钮 ---
+//全部清除按钮
 let clearAllBtn = document.getElementById("clear-all-btn");
 clearAllBtn.addEventListener("click", () => {
   currentColor = null;
@@ -144,21 +145,15 @@ function draw() {
 
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++) {
-      drawTile(x, y, tiles[y][x]);
+      drawTile(x , y, tiles[y][x]);
     }
   }
 
-  push();
-  noFill();
-  stroke(color_devideline);
-  strokeWeight(16); 
-  rect(0, 0, gridSize * cellSize, gridSize * cellSize);
-  pop();
 }
 
 function drawTile(x, y, tile) {
   push();
-  translate(x * cellSize, y * cellSize);
+  translate(x * cellSize + outline_stroke/2 , y * cellSize + outline_stroke/2);
 
   let baseColor = color(tile.color);
 
@@ -252,17 +247,17 @@ function updatePreview(isClearMode = false) {
 
 //导出模式
 function exportGrid(size, transparent = false) {
-  let pg = createGraphics(gridSize * cellSize, gridSize * cellSize);
+  let pg = createGraphics(gridSize * cellSize + outline_stroke , gridSize * cellSize + outline_stroke);
 
   if (transparent) {
-    pg.clear(); // 清除背景 => 透明
+    pg.clear();
   } 
 
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++) {
       let tile = tiles[y][x];
       pg.push();
-      pg.translate(x * cellSize, y * cellSize);
+      pg.translate(x * cellSize + outline_stroke/2, y * cellSize + outline_stroke/2);
 
       let baseColor = color(tile.color);
       if (tile.variant === "compressed") {
@@ -293,15 +288,6 @@ function exportGrid(size, transparent = false) {
 
       pg.pop();
     }
-  }
-
-  if (!transparent) {
-    pg.push();
-    pg.noFill();
-    pg.stroke(color_devideline);
-    pg.strokeWeight(16);
-    pg.rect(0, 0, gridSize * cellSize, gridSize * cellSize);
-    pg.pop();
   }
 
   let img = pg.get();
