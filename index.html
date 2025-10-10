@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uninstall - Navi Cust Painter</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="shortcut icon" href="img/icon_uninstall.ico" type="image/x-icon">
+  </head>
+
+  <header id="main-header">
+    <img src="img/header_uninstall.png" alt="Logo">
+    <h1>Uninstall - Navi Cust Painter</h1>
+  </header>
+
+ <body  class="dynamic-grid">
+    <main id="container">
+      <div id="canvas-container">
+        <h2>NAVI CUSTOMIZER</h2>
+      </div>
+
+      <div id="control-panel">
+        <h3>颜色选择</h3>
+        <div id="color-options"></div>
+
+        <input type="color" id="custom-color" value="#888888" />
+
+        <div id="compressed-toggle" class="toggle-container">
+            <label class="toggle-switch">
+                <input type="checkbox" id="compressed-checkbox">
+                <span class="slider"></span>
+            </label>
+            <span class="toggle-label">压缩模式（半透明）</span>
+        </div>
+
+        <button id="clear-btn">清除模式</button>
+        <button id="clear-all-btn">全部清除</button>
+
+        <h3>花纹选择</h3>
+        <div id="pattern-options">
+        </div>
+
+        <h3>预览</h3>
+        <div id="preview-box">
+
+        </div>
+
+        <button id="export-btn">导出图像</button>
+        <div id="export-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>导出设置</h3>
+            <label>
+            边长（像素）：
+            <input id="export-size" type="number" value="500" min="100" max="2400">
+
+            </br>
+            <label>
+            <input id="export-transparent" type="checkbox">
+                透明背景
+            </label>
+
+            </label>
+            <div class="modal-actions">
+            <button id="confirm-export">导出</button>
+            <button id="cancel-export">取消</button>
+            </div>
+        </div>
+        </div>
+
+            </div>
+    </main>
+
+    <script src="libs/p5.min.js"></script>
+    <script src="sketch_tool.js"></script>
+
+  </body>
+
+    <footer class="hdmi-footer">
+    <div class="hdmi-footer-inner">
+        <div class="left">
+        <strong>Uninstall NaviCust Painter</strong>
+        • ver 1.0.0 • Draw your NaviCust ideas. •
+        <a href="https://wiki.biligame.com/wavebattlenetwork" target="_blank">洛克人EXE & 流星洛克人 电波网络战斗 WIKI</a>
+        </div>
+
+        <div class="meta">
+        <small>by 比格小星 BLS •</small>
+         <a href="https://github.com/BLueStarBLS" target="_blank">GitHub</a>
+        </div>
+    </div>
+    </footer>
+</html>
