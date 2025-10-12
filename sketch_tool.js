@@ -10,6 +10,7 @@ let color_block_bk = "#207CA5";
 let color_devideline = "#2E4068";
 let compressedMode = false;
 let outline_stroke = 8;
+let compressed_alpha = 140;
 
 function setup() {
   canvas = createCanvas(gridSize * cellSize + outline_stroke , gridSize * cellSize + outline_stroke);
@@ -45,7 +46,7 @@ function setup() {
   });
 
 
-let patterns = ["smooth", "block4"];
+let patterns = ["smooth", "block4" ,"block4-e6"];
 let patternDiv = document.getElementById("pattern-options");
 let patternButtons = {};
 
@@ -53,7 +54,24 @@ let patternButtons = {};
 patterns.forEach((p) => {
   let btn = document.createElement("div");
   btn.classList.add("pattern-btn");
-  btn.textContent = p === "smooth" ? "光滑" : "4格";
+  switch (p) {
+  case "smooth":
+    btn.textContent = "光滑";
+    break;
+
+  case "block4":
+    btn.textContent = "4格";
+    break;
+
+  case "block4-e6":
+    btn.textContent = "4格-e6";
+    break;
+
+  default:
+    btn.textContent = "光滑";
+    break;
+}
+
 
   btn.addEventListener("click", () => {
     currentPattern = p;
@@ -159,15 +177,26 @@ function drawTile(x, y, tile) {
 
 
  if (tile.variant === "compressed") {
-    baseColor.setAlpha(140);
+    baseColor.setAlpha(compressed_alpha);
   }
 
   fill(baseColor);
   rect(0, 0, cellSize, cellSize);
 
-  if (tile.pattern === "block4") {
+  switch (tile.pattern) {
+  case "smooth":
+    break;
+  case "block4":
     block4(baseColor, cellSize);
-  }
+    break;
+
+  case "block4-e6":
+    block4_e6(baseColor, cellSize);
+    break;
+
+  default:
+    break;
+}
 
   stroke(color_devideline);
   strokeWeight(8);
@@ -176,19 +205,33 @@ function drawTile(x, y, tile) {
   pop();
 }
 
-function block4(color, size) {
-  fill(darker(color, 0.6));
-  noStroke();
+function block4(color, size, pg = null) {
+  const ctx = pg || this;
+  ctx.noStroke();
+  ctx.fill(darker(color, 0.6));
 
   let gap = size * 0.1;
-
   let s = (size - 3 * gap) / 2;
 
-  rect(gap, gap, s, s);
-  rect(gap * 2 + s, gap, s, s);
-  rect(gap, gap * 2 + s, s, s);
-  rect(gap * 2 + s, gap * 2 + s, s, s);
+  ctx.rect(gap, gap, s, s);
+  ctx.rect(gap * 2 + s, gap, s, s);
+  ctx.rect(gap, gap * 2 + s, s, s);
+  ctx.rect(gap * 2 + s, gap * 2 + s, s, s);
 }
+
+function block4_e6(color, size, pg = null) {
+  const ctx = pg || this;
+  ctx.noStroke();
+  ctx.fill(darker(color, 0.6));
+
+  let gap = size * 0.1;
+  let s = size * 0.5;
+
+  ctx.rect(size/2 - gap/2 , 0, gap , size);
+  ctx.rect( 0 , size/2 - gap/2 , size , gap);
+}
+
+
 
 function isModalOpen() {
   const modal = document.querySelector('.modal');
@@ -261,7 +304,8 @@ function exportGrid(size, transparent = false) {
 
       let baseColor = color(tile.color);
       if (tile.variant === "compressed") {
-        baseColor.setAlpha(140);
+        baseColor = darker(baseColor,0.8);
+        baseColor.setAlpha(compressed_alpha);
       }
 
       if(!transparent||(transparent && baseColor.toString() !== color(color_block_bk).toString())){
@@ -270,9 +314,20 @@ function exportGrid(size, transparent = false) {
         pg.rect(0, 0, cellSize, cellSize);
       }
 
-      if (tile.pattern === "block4") {
-        block4_pg(pg, baseColor, cellSize);
-      }
+      switch (tile.pattern) {
+      case "smooth":
+        break;
+      case "block4":
+        block4(baseColor, cellSize,pg);
+        break;
+
+      case "block4-e6":
+        block4_e6(baseColor, cellSize ,pg);
+        break;
+
+      default:
+        break;
+    }
 
       if (!transparent) {
         pg.stroke(color_devideline);
@@ -296,15 +351,3 @@ function exportGrid(size, transparent = false) {
 }
 
 
-function block4_pg(pg, baseColor, size) {
-  pg.noStroke();
-  pg.fill(darker(baseColor, 0.6));
-
-  let gap = size * 0.1;
-  let s = (size - 3 * gap) / 2;
-
-  pg.rect(gap, gap, s, s);
-  pg.rect(gap * 2 + s, gap, s, s);
-  pg.rect(gap, gap * 2 + s, s, s);
-  pg.rect(gap * 2 + s, gap * 2 + s, s, s);
-}
