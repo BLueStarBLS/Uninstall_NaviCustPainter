@@ -56,19 +56,19 @@ patterns.forEach((p) => {
   btn.classList.add("pattern-btn");
   switch (p) {
   case "smooth":
-    btn.textContent = "光滑";
+    btn.textContent = "光滑 Smooth";
     break;
 
   case "block4":
-    btn.textContent = "4格";
+    btn.textContent = "4格 4 Block";
     break;
 
   case "block4-e6":
-    btn.textContent = "4格-e6";
+    btn.textContent = "4格-e6 4 Block - BN6";
     break;
 
   default:
-    btn.textContent = "光滑";
+    btn.textContent = "光滑 Smooth";
     break;
 }
 
