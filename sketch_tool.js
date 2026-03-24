@@ -27,6 +27,8 @@ const i18n = {
     clear_mode: "清除模式",
     clear_all: "全部清除",
     pattern_select: "花纹选择",
+    export_json: "保存配置",
+    import_json: "载入配置",
     export: "导出图像",
     export_setting: "导出设置",
     export_size: "边长（像素）：",
@@ -49,7 +51,9 @@ const i18n = {
     clear_mode: "Clear Mode",
     clear_all: "Clear All",
     pattern_select: "Pattern",
-    export: "Export",
+    export_json: "Save Config",
+    import_json: "Load Config",
+    export: "Export Image",
     export_setting: "Export Setting",
     export_size: "Size (px):",
     transparent_bg: "Transparent",
@@ -208,7 +212,64 @@ function setup() {
   // 初始化默认状态
   highlightPatternButton(window.patternButtons, currentPattern);
   highlightClearButton(clearBtn, false);
+
+  // JSON Import / Export logic
+  const exportJsonBtn = document.getElementById("export-json-btn");
+  if (exportJsonBtn) {
+    exportJsonBtn.addEventListener("click", () => {
+      exportConfigJSON();
+    });
+  }
+
+  const importJsonBtn = document.getElementById("import-json-btn");
+  const importJsonInput = document.getElementById("import-json-input");
+  
+  if (importJsonBtn && importJsonInput) {
+    importJsonBtn.addEventListener("click", () => {
+      importJsonInput.click();
+    });
+
+    importJsonInput.addEventListener("change", (e) => {
+      importConfigJSON(e);
+    });
+  }
+
+  // 初始化默认状态
   updatePreview();
+}
+
+function exportConfigJSON() {
+  const data = JSON.stringify(tiles, null, 2);
+  const blob = new Blob([data], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "navicust_design.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importConfigJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      if (Array.isArray(parsed) && parsed.length === gridSize && Array.isArray(parsed[0]) && parsed[0].length === gridSize) {
+        tiles = parsed;
+        updatePreview();
+      } else {
+        alert(currentLang === "zh" ? "配置文件格式不正确！(需为5x5配置网格)" : "Invalid file format! (Requires 5x5 grid)");
+      }
+    } catch (err) {
+      alert(currentLang === "zh" ? "文件解析失败，请检查文件是否被修改。" : "Failed to parse file. Please check for errors.");
+    }
+    // reset input allowing reload of the same filename
+    event.target.value = "";
+  };
+  reader.readAsText(file);
 }
 
 function setupLanguageSwitch() {

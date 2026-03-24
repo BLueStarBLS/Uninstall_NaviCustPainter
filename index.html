@@ -11,7 +11,7 @@
 
 <body class="dynamic-grid">
   <main id="container">
-    
+
     <header id="main-header">
       <img src="img/header_uninstall.png" alt="Logo">
       <h1 data-i18n="title">Uninstall - Navi Cust Painter</h1>
@@ -64,12 +64,19 @@
               <h3 data-i18n="pattern_select">花纹选择 Pattern</h3>
               <div id="pattern-options"></div>
 
+              <div class="btn-group" style="margin-top: 5px;">
+                <button id="import-json-btn" class="sys-btn" data-i18n="import_json">导入数据</button>
+                <input type="file" id="import-json-input" accept=".json" style="display: none;" />
+                <button id="export-json-btn" class="sys-btn" data-i18n="export_json">导出数据</button>
+              </div>
+
             </div>
           </div>
 
           <!-- Export Row -->
           <div class="export-row">
-            <button id="export-btn" class="sys-btn" data-i18n="export">导出图像 Export</button>
+            <button id="export-btn" class="sys-btn" data-i18n="export"
+              style="background-color: #03D93A; color: black; margin-top: 5px;">导出图像 Export Image</button>
           </div>
 
           <div id="export-modal" class="modal hidden">
@@ -107,7 +114,7 @@
   <div class="hdmi-footer-inner">
     <div class="left">
       <strong>Uninstall NaviCust Painter</strong>
-      • Ver 1.2.0 • Draw your NaviCust ideas. •
+      • Ver 2.0.0 • Draw your NaviCust ideas. •
       <a href="https://wiki.biligame.com/wavebattlenetwork" target="_blank">洛克人EXE & 流星洛克人 电波网络战斗 WIKI</a>
     </div>
 
