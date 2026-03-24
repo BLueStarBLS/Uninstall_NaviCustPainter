@@ -1,5 +1,5 @@
 body {
-  font-family: sans-serif;
+  font-family: "Microsoft YaHei", Arial, sans-serif;
   background: #fafafa;
   display: flex;
   flex-direction: column;
@@ -67,8 +67,49 @@ body.dynamic-grid {
     0 4px 8px rgba(0, 0, 0, 0.3),
     inset 0 0 0 3px #ddd,
     0 0 0 4px #222;
-  width: 60%;
-  margin: 20px auto;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#lang-switch {
+  position: absolute;
+  right: 20px;
+  display: flex;
+  gap: 5px;
+}
+
+.lang-dropdown {
+  position: absolute;
+  right: 20px;
+  background: #333;
+  color: #fff;
+  border: 2px solid #555;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  font-family: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  /* manual dropdown arrow */
+  background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position-x: calc(100% - 4px);
+  background-position-y: center;
+  padding-right: 28px;
+}
+
+.lang-dropdown:hover, .lang-dropdown:focus {
+  background-color: #249b95;
+  border-color: #fff;
+  color: #fff;
+  outline: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.6), inset 0 0 6px rgba(255,255,255,0.3);
+  transform: translateY(-2px);
 }
 
 #main-header img {
@@ -90,136 +131,330 @@ body.dynamic-grid {
   text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
-/*正文*/
-#canvas-container {
+/* Canvas Title & Container without the grey base */
+#canvas-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  position: relative;
-  padding: 24px;
-  border-radius: 10px;
-  box-shadow:
-    0 4px 8px rgba(0, 0, 0, 0.3),
-    inset 0 0 0 3px #ddd,
-    0 0 0 4px #eee;
-  margin: 20px auto;
-  border: 1px solid #ccc;
-  background: gray;
 }
 
-#canvas-container h2 {
+#canvas-wrapper h2.title-text {
   font-size: 24px;
   font-weight: 700;
   color: #fff;
   text-align: center;
   letter-spacing: 1px;
   margin: 0;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.8), 2px 2px 0px #0868C0;
+  margin-bottom: 20px;
 }
 
+#canvas-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  /* removing the thick padding/borders so the p5 sketch controls its own framing */
+  margin: 0 auto;
+}
+
+/* Feature Frame replacing control panel outer styling */
+.feature-frame {
+  background-color: #17a06a; /* base green */
+  border: 4px solid #b5c7d3; /* outer gray metallic border */
+  border-radius: 4px;
+  position: relative;
+  padding: 30px 15px 15px 15px; /* enough top padding for the top banner */
+  box-shadow: 
+    inset 0 0 0 3px #138257, /* dark green inner outline */
+    4px 4px 16px rgba(0,0,0,0.5); /* extra drop shadow */
+  box-sizing: border-box;
+}
 
 #container {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
   padding: 20px;
   gap: 20px;
+  width: max-content;
+  margin: 0 auto;
+}
+
+.frame-content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* The upper dark green banner inside the frame */
+.feature-frame::after {
+  content: "";
+  position: absolute;
+  top: 3px; 
+  left: 3px; 
+  right: 3px;
+  height: 20px;
+  background-color: #0b593a;
+  pointer-events: none;
+  border-bottom: 1px solid #138257;
+  /* subtle striping on right side */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 4px,
+    #17a06a 4px,
+    #17a06a 6px
+  );
+  background-size: 80px 100%;
+  background-position: calc(100% - 10px) top;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+/* Gray corners acting as brackets */
+.feature-frame::before {
+  content: "";
+  position: absolute;
+  top: -4px; right: -4px; bottom: -4px; left: -4px;
+  border-radius: 4px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 100% 100%, transparent 6px, #b5c7d3 7px) top left / 12px 12px no-repeat,
+    radial-gradient(circle at 0% 100%, transparent 6px, #b5c7d3 7px) top right / 12px 12px no-repeat,
+    radial-gradient(circle at 100% 0%, transparent 6px, #b5c7d3 7px) bottom left / 12px 12px no-repeat,
+    radial-gradient(circle at 0% 0%, transparent 6px, #b5c7d3 7px) bottom right / 12px 12px no-repeat;
+  z-index: 10;
 }
 
 #control-panel {
-  background: white;
-  border: 3px solid #48B8F0;
-  box-shadow:
-    0 0 0 3px #0868C0,
-    inset 0 0 0 2px #48B8F0;
-  border-radius: 10px;
-  padding: 20px;
-  min-width: 180px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
+  width: 260px; /* FIXED control panel width */
+  min-width: 260px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  position: relative;
+  z-index: 1; /* keep contents above frame decorations */
+}
+
+.navi-panel {
+  background-color: #1a4f72; /* matches interior blue better */
+  border: 4px solid #1A3050;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5); /* soft shadow dropping onto the green */
+}
+
+.navi-panel::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border: 4px solid #53CFFF;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.navi-panel-head {
+  background-color: #53CFFF;
+  color: white;
+  text-align: center;
+  font-weight: 800; /* Use thick font-weight instead of specific font */
+  font-size: 16px;
+  letter-spacing: 2px;
+  padding: 4px 0;
+  margin: 4px 4px 0 4px;
+  position: relative;
+  z-index: 2;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+}
+
+.navi-panel-body {
+  padding: 12px;
+  margin: 0 4px 4px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.scrollable-body {
+  max-height: 280px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px; /* space for custom scrollbar */
+}
+
+/* Custom Scrollbar for Program Box */
+.scrollable-body::-webkit-scrollbar {
+  width: 16px;
+  background-color: transparent;
+}
+
+.scrollable-body::-webkit-scrollbar-track {
+  background-color: #1A3050;
+  border-left: 2px solid #15486B;
+  border-right: 2px solid #15486B;
+}
+
+.scrollable-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(#00C000, #00C000) center/6px 50% no-repeat, #B8E8FF;
+  border: 2px solid #0A2830;
+  border-radius: 8px;
+}
+
+.export-row {
+  display: flex;
+  justify-content: center;
+}
+
+.export-row button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
 }
 
 #control-panel h3 {
-  margin: 10px 0 5px;
-  font-size: 16px;
-  border-bottom: 1px solid #555;
+  margin: 6px 0 2px;
+  font-size: 14px;
+  color: #fff;
+  border-bottom: 2px solid #53CFFF;
   padding-bottom: 4px;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
 }
 
 #color-options,
 #pattern-options {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
-  margin-bottom: 10px;
+  gap: 8px;
+  margin-bottom: 5px;
 }
 
-/*#clear-btn,
-#clear-all-btn{
-  width: 84x;
-  padding: 2px 10px;
-  background-color: #222;
-  color: #ccc;
-  border: 1px solid #666;
-  cursor: pointer;
-  margin-bottom: 10px;
-  transition: 0.2s;
-}*/
+.color-picker-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f0f8ff;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid #48B8F0;
+}
 
-#clear-btn:hover,
-#clear-all-btn:hover,
-#compress-mode-btn.active {
-  background-color: #aaa;
+.btn-group {
+  display: flex;
+  gap: 10px;
+}
+
+.sys-btn {
+  flex: 1;
+  padding: 8px 10px;
+  background-color: #249b95;
+  color: #fff;
+  border: 2px solid white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+  box-shadow: 2px 2px 0px #134645;
+  transition: all 0.1s ease;
+  letter-spacing: 1px;
+}
+
+.sys-btn:hover {
+  background-color: #1a7470;
+}
+
+.sys-btn:active {
+  box-shadow: 0px 0px 0px #134645;
+  transform: translate(2px, 2px);
+}
+
+#export-btn, #confirm-export {
+  background-color: #5cf436;
+  text-shadow: 1px 1px 0px #319e1c;
+  box-shadow: 2px 2px 0px #0b4545;
+  font-size: 14px;
+}
+
+#export-btn:hover, #confirm-export:hover {
+  background-color: #42c222;
 }
 
 #clear-btn.active,
 #compress-mode-btn.active {
-  border: 2px solid #fff;
-  background-color: #444;
+  border: 2px solid #fcde2b;
+  background-color: #e59e10;
   color: #fff;
-  box-shadow: 0 0 6px #aaa;
+  box-shadow: 0 0 6px rgba(252,222,43,0.6);
 }
 
 
 .color-btn
 {
-  width: 48px;
-  height: 30px;
-  border: 1px solid #666;
+  width: 40px;
+  height: 40px;
+  border: 2px solid #1A3050;
+  border-radius: 2px; /* make them square/blocky */
   cursor: pointer;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.4), 2px 2px 0 rgba(0,0,0,0.6);
+  transition: transform 0.1s, border-color 0.1s;
+}
+
+.color-btn:hover {
+  transform: translateY(-2px);
+  border-color: #fff;
 }
 
 .pattern-btn 
 {
-  width: 72px;
-  padding: 6px 10px;
-  background-color: #222;
-  color: #ccc;
-  border: 1px solid #666;
+  width: 48px;
+  height: 48px;
+  background-color: #404040;
+  color: transparent;
+  border: 2px solid #666;
+  border-radius: 6px;
   cursor: pointer;
-  margin-bottom: 10px;
+  position: relative;
   transition: 0.2s;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.pattern-btn span {
+  display: none; /* Hide internal text as background is the preview */
 }
 
 .pattern-btn.active {
-  border: 2px solid #fff;
-  background-color: #333;
-  color: #fff;
-  box-shadow: 0 0 5px #aaa;
+  border: 3px solid #ffcc00;
+  box-shadow: 0 0 8px #ffcc00;
+  transform: scale(1.05);
 }
 
-.color-btn:hover,
 .pattern-btn:hover {
   border-color: #fff;
 }
 
 #preview-box {
-  width: 60px;
-  height: 60px;
-  border: 2px solid #888;
-  margin-top: 10px;
+  width: 80px;
+  height: 80px;
+  border: 3px solid #1A3050;
+  border-radius: 4px;
+  background-color: #207CA5; /* grid match */
+  background-size: cover;
+  background-position: center;
+  box-shadow: inset 0 0 0 2px #53CFFF, 4px 4px 0 rgba(0,0,0,0.4);
+  margin-top: 5px;
 }
 
 /* 弹窗样式 */

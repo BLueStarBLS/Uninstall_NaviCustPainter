@@ -1,92 +1,121 @@
 <!DOCTYPE html>
 <html lang="zh">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Uninstall - Navi Cust Painter</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="shortcut icon" href="img/icon_uninstall.ico" type="image/x-icon">
-  </head>
 
-  <header id="main-header">
-    <img src="img/header_uninstall.png" alt="Logo">
-    <h1>Uninstall - Navi Cust Painter</h1>
-  </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Uninstall - Navi Cust Painter</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="shortcut icon" href="img/icon_uninstall.ico" type="image/x-icon">
+</head>
 
- <body  class="dynamic-grid">
-    <main id="container">
-      <div id="canvas-container">
-        <h2>NAVI CUSTOMIZER</h2>
-      </div>
+<body class="dynamic-grid">
+  <main id="container">
+    
+    <header id="main-header">
+      <img src="img/header_uninstall.png" alt="Logo">
+      <h1 data-i18n="title">Uninstall - Navi Cust Painter</h1>
+      <select id="lang-switch-select" class="lang-dropdown">
+        <option value="zh">中文</option>
+        <option value="en">English</option>
+      </select>
+    </header>
 
-      <div id="control-panel">
-        <h3>颜色选择 Color</h3>
-        <div id="color-options"></div>
+    <div class="feature-frame">
+      <div class="frame-content">
 
-        <input type="color" id="custom-color" value="#888888" />
-
-        <div id="compressed-toggle" class="toggle-container">
-            <label class="toggle-switch">
-                <input type="checkbox" id="compressed-checkbox">
-                <span class="slider"></span>
-            </label>
-            <span class="toggle-label">压缩模式（半透明） Compressed</span>
+        <div id="canvas-wrapper">
+          <h2 class="title-text">NAVI CUSTOMIZER</h2>
+          <div id="canvas-container">
+          </div>
         </div>
 
-        <button id="clear-btn">清除模式 Clear Mode</button>
-        <button id="clear-all-btn">全部清除 Clear All</button>
+        <div id="control-panel">
 
-        <h3>花纹选择 Pattern</h3>
-        <div id="pattern-options">
-        </div>
+          <!-- Information Box for Preview -->
+          <div class="navi-panel">
+            <div class="navi-panel-head" data-i18n="information">INFORMATION</div>
+            <div class="navi-panel-body" style="align-items: center;">
+              <div id="preview-box"></div>
+            </div>
+          </div>
 
-        <h3>预览 Preview</h3>
-        <div id="preview-box">
+          <!-- Program Box for Tools -->
+          <div class="navi-panel">
+            <div class="navi-panel-head" data-i18n="program">PROGRAM</div>
+            <div class="navi-panel-body scrollable-body">
 
-        </div>
+              <h3 data-i18n="color_select">颜色选择 Color</h3>
+              <div id="color-options"></div>
 
-          <button id="export-btn">导出图像 Export</button>
-          <div id="export-modal" class="modal hidden">
-          <div class="modal-content">
-              <h3>导出设置 Export Setting</h3>
-              <label>
-              边长（像素）：
-              <input id="export-size" type="number" value="500" min="100" max="2400">
-
-              </br>
-              <label>
-              <input id="export-transparent" type="checkbox">
-                  透明背景 Transparent
-              </label>
-
-              </label>
-              <div class="modal-actions">
-              <button id="confirm-export">导出 Export</button>
-              <button id="cancel-export">取消 Cancel</button>
+              <div class="color-picker-container">
+                <label data-i18n="custom_color">自定义颜色 Custom</label>
+                <input type="color" id="custom-color" value="#888888" />
               </div>
+
+              <button id="compress-mode-btn" class="sys-btn" style="width: 100%; margin-bottom: 10px;"
+                data-i18n="compressed_mode">压缩模式（半透明）</button>
+
+              <div class="btn-group">
+                <button id="clear-btn" class="sys-btn" data-i18n="clear_mode">清除模式 Clear Mode</button>
+                <button id="clear-all-btn" class="sys-btn" data-i18n="clear_all">全部清除 Clear All</button>
+              </div>
+
+              <h3 data-i18n="pattern_select">花纹选择 Pattern</h3>
+              <div id="pattern-options"></div>
+
+            </div>
           </div>
+
+          <!-- Export Row -->
+          <div class="export-row">
+            <button id="export-btn" class="sys-btn" data-i18n="export">导出图像 Export</button>
+          </div>
+
+          <div id="export-modal" class="modal hidden">
+            <div class="modal-content">
+              <h3 data-i18n="export_setting">导出设置 Export Setting</h3>
+              <label>
+                <span data-i18n="export_size">边长（像素）：</span>
+                <input id="export-size" type="number" value="500" min="100" max="2400">
+              </label>
+
+              <label style="margin-top:10px;">
+                <input id="export-transparent" type="checkbox">
+                <span data-i18n="transparent_bg">透明背景 Transparent</span>
+              </label>
+
+              <div class="modal-actions">
+                <button id="confirm-export" class="sys-btn" data-i18n="export_confirm">导出 Export</button>
+                <button id="cancel-export" class="sys-btn" data-i18n="export_cancel">取消 Cancel</button>
+              </div>
+            </div>
           </div>
 
         </div>
-    </main>
 
-    <script src="libs/p5.min.js"></script>
-    <script src="sketch_tool.js"></script>
-
-  </body>
-
-    <footer class="hdmi-footer">
-    <div class="hdmi-footer-inner">
-        <div class="left">
-        <strong>Uninstall NaviCust Painter</strong>
-        • Ver 1.1.1 • Draw your NaviCust ideas. •
-        <a href="https://wiki.biligame.com/wavebattlenetwork" target="_blank">洛克人EXE & 流星洛克人 电波网络战斗 WIKI</a>
-        </div>
-
-        <div class="meta">
-        <small>by 比格小星 BLS •</small>
-         <a href="https://github.com/BLueStarBLS" target="_blank">GitHub</a>
-        </div>
+      </div>
     </div>
-    </footer>
+  </main>
+
+  <script src="libs/p5.min.js"></script>
+  <script src="sketch_tool.js"></script>
+
+</body>
+
+<footer class="hdmi-footer">
+  <div class="hdmi-footer-inner">
+    <div class="left">
+      <strong>Uninstall NaviCust Painter</strong>
+      • Ver 1.2.0 • Draw your NaviCust ideas. •
+      <a href="https://wiki.biligame.com/wavebattlenetwork" target="_blank">洛克人EXE & 流星洛克人 电波网络战斗 WIKI</a>
+    </div>
+
+    <div class="meta">
+      <small>by 比格小星 BLS •</small>
+      <a href="https://github.com/BLueStarBLS" target="_blank">GitHub</a>
+    </div>
+  </div>
+</footer>
+
 </html>
